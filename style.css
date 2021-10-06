@@ -1,0 +1,38 @@
+body {
+    background-color: rgb(241, 241, 194);
+    margin: 15px;
+}
+.Name_of_the_Pokemon {
+    display: flex;
+    flex-wrap: wrap;
+    gap: auto;
+    justify-content: auto;
+}
+.POKE {
+    
+    font-size: 2.3em;
+    text-align: center;
+    border-radius: 50px;
+    flex: 1 1 100%;
+}
+.Card {
+    background-color: rgb(192, 186, 248);
+    font-size: 1.1em;
+    color: black;
+    border-radius: 50px;
+    padding : 15px;
+    width: 380px;
+    height: 300px;
+    display: grid;
+    justify-content: center;
+    
+}
+
+.name {
+    font-size: 1.8em;
+    font-family: Roboto;
+    font-weight: 700;
+    text-align: center;
+    grid-column: 1 / span 2;
+    color: rgb(204, 78, 28);
+}
