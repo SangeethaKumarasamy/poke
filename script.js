@@ -1,90 +1,59 @@
+const poke_container = document.getElementById('poke_container');
+const image = document.getElementById("pokiImage");
+const pokemons_number = 50;
 
-async function foo(){
-  let poke=await fetch(`https://pokeapi.co/api/v2/pokemon/?offset=1&limit=50`);
-  //console.log(poke);
-  let pokedata=await poke.json();
- // console.log(pokedata);
- 
-  let count_poke=pokedata.results;
- //console.log(count_poke);
+const fetchPokemons = async () => {
+	for (let i = 1; i <= pokemons_number; i++) {
+		await getPokemon(i);
+	}
+};
 
- for(let i =0;i<50; i++){
- 
-     // console.log(data[i].id)
-            
- //Display around 50 pokemons
- let names=(`name: ${count_poke[i].name}`);
- //console.log(names);
+const getPokemon = async id => {
+	const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
+	const res = await fetch(url);
+	const pokemon = await res.json();
+	createPokemonCard(pokemon);
+   // console.log(pokemon);
+};
 
- let details=await fetch(`${count_poke[i].url}`);
- let eachDataDetails=await details.json();
-   //console.log(eachDataDetails);
+function createPokemonCard(pokemon) {
+	const pokemonEl = document.createElement('div');
+	pokemonEl.classList.add('pokemon');
 
- //Each pokemon’s ability needs to be listed.
- let abi1=eachDataDetails.abilities[0];
-  let abil1=abi1.ability.name;
-  let abi2=eachDataDetails.abilities[1];
-  let abil2=abi2.ability.name;
- let ability=(`0:${abil1} 1:${abil2}`);
- // console.log(ability);
+    //Display around 50 pokemons
+	const name = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
+	//console.log(name);
 
 
- 
- //Display the pokemon’s moves.
- let moves=eachDataDetails.moves[0];
- let move=moves.move.name;
- // console.log(move);
- 
-
- //Also display the weight of each pokemon
-
- let wt=(`${eachDataDetails.weight}`);
- //console.log(wt);
- 
-    var namepoke=document.createElement("div");
- namepoke.ClassName="Name_of_the_Pokemon";
-
- var abipoke=document.createElement("div");
- abipoke.className = "abilities";
-
- var pokemove=document.createElement("div");
- pokemove.className="Moves";
-
- var wtpoke=document.createElement("div");
- wtpoke.className="Weight";
+	 //Each pokemon’s ability needs to be listed.
+	const poke_abilities = pokemon.abilities.map(ability =>ability.ability.name);
+	//console.log(poke_abilities[0]);
 
 
- var pokeHead=document.createElement("div");
- pokeHead.className="POKE";
- pokeHead.innerText = "POKEMONS";
- namepoke.append(pokeHead);
-for(i in count_poke) {
-     const pokeContainer = document.createElement("div");
-     pokeContainer.className = "Card";
-     pokeContainer.innerHTML = 
-     `<div class="name">${names}</div>
-     <div>Ability--  </div>
-     <div>${ability}</div>
-     <div>Moves--</div>
-     <div>${move}</div>
-     <div>weight--</div>
-     <div>${wt}</div>
-     </div>`;
-      namepoke.append(pokeContainer);
- };
- document.body.append(namepoke);
+     //Display the pokemon’s moves.
+	 const moves = pokemon.moves.map(move =>move.move.name);
+	 //console.log(moves[0]);
 
+	  //Also display the weight of each pokemon
+	  const weight= pokemon.weight;
+	 // console.log(weight);
+	
+		const pokeInnerHTML = `
+		<div class="img-container">
+            <img url="https://www.pngitem.com/so/pokemon/"${pokemon.id}.png" alt="${name}" />
+        </div>
+        <div>
+            <h2 class="name">${name}</h2>
+        </div>
+		<div><b>Ability:</b>  ${poke_abilities[0]}</div>
+		<div><b>Move:</b>  ${moves[0]}</div>
+		<div><b>Weight:</b> ${weight}</div>
+		
+    `;
 
+	pokemonEl.innerHTML = pokeInnerHTML;
 
-
- 
-
- }
-
- 
-
-
- 
-
+	poke_container.appendChild(pokemonEl);
 }
-foo();
+
+fetchPokemons();
